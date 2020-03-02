@@ -46,7 +46,7 @@ try:
 except:
     from smbus import SMBus
 
-from vector3d import Vector3d
+from .vector3d import Vector3d
 
 
 class MPUException(OSError):

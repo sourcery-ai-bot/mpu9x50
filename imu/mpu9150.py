@@ -23,8 +23,8 @@ THE SOFTWARE.
 # 17th May 2017 utime replaces pyb
 # 15th June 2015 Now uses subclass of InvenSenseMPU
 
-from imu import MPU6050, bytes_toint, MPUException
-from vector3d import Vector3d
+from .imu import MPU6050, bytes_toint, MPUException
+from .vector3d import Vector3d
 from time import sleep
 # from utime import sleep_ms
 
