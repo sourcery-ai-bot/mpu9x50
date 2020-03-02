@@ -1,3 +1,18 @@
+### OVERVIEW
+This is a fork of the [Micropython](https://github.com/micropython-IMU/micropython-mpu9x50) repository converted to work with regular python using smbus (raspberry pi, jetson nano, etc.).
+
+Changes to usage only include creation:
+```python
+# OLD
+def __init__(self, side_str, device_addr=None, transposition=(0, 1, 2), scaling=(1, 1, 1)):
+
+# NEW
+# bus: either integer indicating smbus or existing SMBus object
+# device_addr: Now required. Will not try and guess it for you
+def __init__(self, bus, device_addr, transposition=(0, 1, 2), scaling=(1, 1, 1)):
+```
+# Begin Micro-Python Documentation
+
 As of now, this repo holds:
 * vector3d - a vector class for IMU devices
 * imu - a base class for MPU9x50 devices. Supports the MPU6050.
