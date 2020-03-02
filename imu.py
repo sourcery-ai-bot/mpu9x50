@@ -40,7 +40,12 @@ THE SOFTWARE.
 from time import sleep
 # from machine import I2C
 import struct
-from smbus2 import SMBus
+
+try:
+    from smbus2 import SMBus
+except:
+    from smbus import SMBus
+
 from vector3d import Vector3d
 
 
