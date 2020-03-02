@@ -64,7 +64,7 @@ can be powered from 3.3V or 5V.
 
 Example assuming an MPU9250 connected to 'X' I2C interface on the Pyboard:
 ```python
-from mpu9250 import MPU9250
+from imu.mpu9250 import MPU9250
 imu = MPU9250('X')
 print(imu.accel.xyz)
 print(imu.gyro.xyz)
@@ -291,7 +291,7 @@ power cycle is required to clear it.
 # Demo of calibration
 
 ```python
->>> from  mpu9250 import MPU9250
+>>> from  imu.mpu9250 import MPU9250
 >>> a = MPU9250('x')
 >>> a.mag.cal
 (0, 0, 0)

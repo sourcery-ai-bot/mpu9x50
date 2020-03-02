@@ -1,7 +1,7 @@
 # Test program for IRQ based access to MPU9250
 # Note there will be small differences between the lines because
 # of drift or movement occurring between the readings
-from mpu9250 import MPU9250
+from imu.mpu9250 import MPU9250
 
 imu = MPU9250(bus=1, device_addr=0x68)
 
