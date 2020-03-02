@@ -11,6 +11,18 @@ def __init__(self, side_str, device_addr=None, transposition=(0, 1, 2), scaling=
 # device_addr: Now required. Will not try and guess it for you
 def __init__(self, bus, device_addr, transposition=(0, 1, 2), scaling=(1, 1, 1)):
 ```
+
+### Installation
+```console
+git clone https://github.com/psomers3/mpu9x50.git
+cd mpu9x50
+pip install .
+```
+#### usage
+```python
+from imu import MPU6050, MPU9150, MPU9250
+```
+
 # Begin Micro-Python Documentation
 
 As of now, this repo holds:
