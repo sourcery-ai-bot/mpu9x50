@@ -58,8 +58,8 @@ class Vector3d(object):
         '''
         checks if arguments are of correct length
         '''
-        if len(arg) != 3 or not (type(arg) is list or type(arg) is tuple):
-            raise ValueError(name + ' must be a 3 element list or tuple')
+        if len(arg) != 3 or type(arg) is not list and type(arg) is not tuple:
+            raise ValueError(f'{name} must be a 3 element list or tuple')
 
     def calibrate(self, stopfunc, waitfunc=default_wait):
         '''

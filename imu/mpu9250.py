@@ -95,13 +95,12 @@ class MPU9250(MPU6050):
         Cutoff (Hz):        250 184 92  41  20  10  5   3600
         Sample rate (KHz):  8   1   1   1   1   1   1   8
         '''
-        if filt in range(8):
-            try:
-                self._write(filt, 0x1A, self.mpu_addr)
-            except OSError:
-                raise MPUException(self._I2Cerror)
-        else:
+        if filt not in range(8):
             raise ValueError('Filter coefficient must be between 0 and 7')
+        try:
+            self._write(filt, 0x1A, self.mpu_addr)
+        except OSError:
+            raise MPUException(self._I2Cerror)
 
     @property
     def accel_filter_range(self):
@@ -126,13 +125,12 @@ class MPU9250(MPU6050):
         Cutoff (Hz):        460 184 92  41  20  10  5   460
         Sample rate (KHz):  1   1   1   1   1   1   1   1
         '''
-        if filt in range(8):
-            try:
-                self._write(filt, 0x1D, self.mpu_addr)
-            except OSError:
-                raise MPUException(self._I2Cerror)
-        else:
+        if filt not in range(8):
             raise ValueError('Filter coefficient must be between 0 and 7')
+        try:
+            self._write(filt, 0x1D, self.mpu_addr)
+        except OSError:
+            raise MPUException(self._I2Cerror)
 
     def _magsetup(self):                        # mode 2 100Hz continuous reads, 16 bit
         '''

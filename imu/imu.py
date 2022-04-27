@@ -62,9 +62,11 @@ def bytes_toint(msb, lsb):
     for little endian reverse msb, lsb arguments
     Can be used in an interrupt handler
     '''
-    if not msb & 0x80:
-        return msb << 8 | lsb  # +ve
-    return - (((msb ^ 255) << 8) | (lsb ^ 255) + 1)
+    return (
+        -(((msb ^ 255) << 8) | (lsb ^ 255) + 1)
+        if msb & 0x80
+        else msb << 8 | lsb
+    )
 
 
 class MPU6050(object):
@@ -88,11 +90,7 @@ class MPU6050(object):
 
         sleep(0.200)                           # Ensure PSU and device have settled
 
-        if isinstance(bus, int):
-            self._mpu_i2c = SMBus(bus)
-        else:
-            self._mpu_i2c = bus  # Type: SMBus
-
+        self._mpu_i2c = SMBus(bus) if isinstance(bus, int) else bus
         self.mpu_addr = device_addr
 
         self.chip_id                     # Test communication by reading chip_id: throws exception on error
@@ -108,7 +106,7 @@ class MPU6050(object):
         Read bytes to pre-allocated buffer Caller traps OSError.
         '''
         data = self._mpu_i2c.read_i2c_block_data(addr, memaddr, len(buf))
-        data_as_bytes = struct.pack(str(len(data))+'B', *data)
+        data_as_bytes = struct.pack(f'{len(data)}B', *data)
         for i in range(len(data)):
             buf[i] = data[i]
         # self._mpu_i2c.readfrom_mem_into(addr, memaddr, buf)
@@ -195,15 +193,14 @@ class MPU6050(object):
         '''
         Sets passthrough mode True or False
         '''
-        if type(mode) is bool:
-            val = 2 if mode else 0
-            try:
-                self._write(val, 0x37, self.mpu_addr)  # I think this is right.
-                self._write(0x00, 0x6A, self.mpu_addr)
-            except OSError:
-                raise MPUException(self._I2Cerror)
-        else:
+        if type(mode) is not bool:
             raise ValueError('pass either True or False')
+        val = 2 if mode else 0
+        try:
+            self._write(val, 0x37, self.mpu_addr)  # I think this is right.
+            self._write(0x00, 0x6A, self.mpu_addr)
+        except OSError:
+            raise MPUException(self._I2Cerror)
 
     # sample rate. Not sure why you'd ever want to reduce this from the default.
     @property
@@ -256,14 +253,12 @@ class MPU6050(object):
         Cutoff (Hz):        250 184 92  41  20  10  5
         Sample rate (KHz):  8   1   1   1   1   1   1
         '''
-        # set range
-        if filt in range(7):
-            try:
-                self._write(filt, 0x1A, self.mpu_addr)
-            except OSError:
-                raise MPUException(self._I2Cerror)
-        else:
+        if filt not in range(7):
             raise ValueError('Filter coefficient must be between 0 and 6')
+        try:
+            self._write(filt, 0x1A, self.mpu_addr)
+        except OSError:
+            raise MPUException(self._I2Cerror)
 
     # accelerometer range
     @property
